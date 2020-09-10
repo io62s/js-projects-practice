@@ -1,7 +1,7 @@
 const shoppingForm = document.querySelector(".shopping");
 const list = document.querySelector(".list");
 
-const items = [];
+let items = [];
 
 function handleSubmit(e) {
   e.preventDefault();
@@ -26,9 +26,13 @@ function displayItems() {
   const html = items
     .map((item) => {
       return `<li class="shopping-item">
-      <input type="checkbox">
+      <input value="${item.id}" type="checkbox" ${
+        item.complete ? "checked" : null
+      }>
       <span class="itemName">${item.name}</span>
-      <button aria-label="Remove ${item.name}">&times;</button>
+      <button value="${item.id}" aria-label="Remove ${
+        item.name
+      }">&times;</button>
       </li>`;
     })
     .join("");
@@ -45,8 +49,29 @@ function getItemsFromLS() {
   list.dispatchEvent(new CustomEvent("itemsUpdated"));
 }
 
+function deleteItem(id) {
+  items = items.filter((item) => item.id !== id);
+  list.dispatchEvent(new CustomEvent("itemsUpdated"));
+}
+
+function markAsComplite(id) {
+  let itemRef = items.find((item) => item.id === id);
+  itemRef.complete = !itemRef.complete;
+  // Object.assign(items, itemRef);
+  list.dispatchEvent(new CustomEvent("itemsUpdated"));
+}
+
 shoppingForm.addEventListener("submit", handleSubmit);
 list.addEventListener("itemsUpdated", displayItems);
 list.addEventListener("itemsUpdated", mirrortoLocalStorage);
+list.addEventListener("click", (e) => {
+  const id = parseInt(e.target.value);
+  if (e.target.matches("button")) {
+    deleteItem(id);
+  }
+  if (e.target.matches("input[type='checkbox']")) {
+    markAsComplite(id);
+  }
+});
 
 getItemsFromLS();
