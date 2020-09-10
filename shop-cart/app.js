@@ -39,7 +39,7 @@ function displayItems() {
   list.innerHTML = html;
 }
 
-function mirrortoLocalStorage() {
+function setItemstoLocalStorage() {
   localStorage.setItem("items", JSON.stringify(items));
 }
 
@@ -57,13 +57,12 @@ function deleteItem(id) {
 function markAsComplite(id) {
   let itemRef = items.find((item) => item.id === id);
   itemRef.complete = !itemRef.complete;
-  // Object.assign(items, itemRef);
   list.dispatchEvent(new CustomEvent("itemsUpdated"));
 }
 
 shoppingForm.addEventListener("submit", handleSubmit);
 list.addEventListener("itemsUpdated", displayItems);
-list.addEventListener("itemsUpdated", mirrortoLocalStorage);
+list.addEventListener("itemsUpdated", setItemstoLocalStorage);
 list.addEventListener("click", (e) => {
   const id = parseInt(e.target.value);
   if (e.target.matches("button")) {
