@@ -3,13 +3,23 @@ body {
   display: grid;
   align-items: start;
   justify-items: center;
-  background-color: #f7f7f7;
+  background-color: #333;
 }
 
 /* Shopping Form */
 .shopping {
   display: grid;
   grid-template-columns: 1fr auto;
+}
+
+.shopping button {
+  padding: 10px 20px;
+  background-color: orangered;
+  font-size: 18px;
+  color: white;
+  outline: none;
+  border: none;
+  cursor: pointer;
 }
 
 .shopping-list {

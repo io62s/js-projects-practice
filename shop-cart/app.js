@@ -8,7 +8,7 @@ function handleSubmit(e) {
   const name = e.currentTarget.item.value;
   if (!name) return;
   const item = {
-    name: name,
+    name,
     id: Date.now(),
     complete: false,
   };
@@ -18,7 +18,8 @@ function handleSubmit(e) {
 
   //clear input
   e.target.reset();
-  displayItems();
+  //custom event
+  list.dispatchEvent(new CustomEvent("itemsUpdated"));
 }
 
 function displayItems() {
@@ -35,3 +36,4 @@ function displayItems() {
 }
 
 shoppingForm.addEventListener("submit", handleSubmit);
+list.addEventListener("itemsUpdated", displayItems);
