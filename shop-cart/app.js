@@ -35,5 +35,18 @@ function displayItems() {
   list.innerHTML = html;
 }
 
+function mirrortoLocalStorage() {
+  localStorage.setItem("items", JSON.stringify(items));
+}
+
+function getItemsFromLS() {
+  let lsItems = JSON.parse(localStorage.getItem("items")) || [];
+  items.push(...lsItems);
+  list.dispatchEvent(new CustomEvent("itemsUpdated"));
+}
+
 shoppingForm.addEventListener("submit", handleSubmit);
 list.addEventListener("itemsUpdated", displayItems);
+list.addEventListener("itemsUpdated", mirrortoLocalStorage);
+
+getItemsFromLS();
